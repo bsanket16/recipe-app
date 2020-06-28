@@ -4,7 +4,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import "bootstrap/dist/css/bootstrap.min.css"
 import {Link} from 'react-router-dom'
 import {Control,LocalForm,Errors} from 'react-redux-form'       
-
+import { Loading } from './LoadingComponent';
 const required =(val) =>val&&val.length;
 const maxLength = (len)=>(val)=>!(val)||(val.length<=len)
 const minLength = (len)=>(val)=>(val)&&(val.length>=len)
@@ -26,9 +26,8 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        this.toggleModal();
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        this.toggleModal(); 
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -80,7 +79,7 @@ class CommentForm extends Component {
         );
     }
 }
-    function RenderComments({comments}) {
+    function RenderComments({comments, addComment, dishId}) {
         if (comments == null) {
             return (<div></div>)
         }
@@ -105,7 +104,7 @@ class CommentForm extends Component {
                 <ul className='list-unstyled'>
                     {cmnts}
                 </ul>
-            <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         )
     }
@@ -130,7 +129,25 @@ class CommentForm extends Component {
     }
 
     const Dishdetail = (props) => {
-        if (props.dish != null) {
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.dish != null)  {
             return (
                 
                 <div className="container">
@@ -148,7 +165,10 @@ class CommentForm extends Component {
                 </div>
                     <div className="row">
                         <RenderDish dish={props.dish} />
-                        <RenderComments comments={props.comments} />
+                        <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                     </div>
                 </div>
         )
