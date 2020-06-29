@@ -167,8 +167,8 @@ const RenderComments =({comments,postComment,dishId}) =>
                     
                     return(
                     <Fade in>
-                    <li>{co.comment}</li><br />
-                    <li>-- {co.author}, {formatDate(co.date)}</li><br />
+                    <li>{co.comment}</li>
+                    <li>-- {co.author}, {formatDate(co.date)}</li> <br />
                     </Fade>
                 )
                     
