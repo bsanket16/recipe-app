@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {baseUrl} from '../shared/baseUrl'
 import {Fade,Stagger } from 'react-animation-components'
 
+
 const RenderLeader=(props)=>
 {
     return(
@@ -24,7 +25,7 @@ const RenderLeader=(props)=>
 function About(props) {
     const leaders = props.leaders.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader} key={leader.id}/>
+            <Fade in> <RenderLeader leader={leader} key={leader.id}/> </Fade>
         );
     });
     return(
